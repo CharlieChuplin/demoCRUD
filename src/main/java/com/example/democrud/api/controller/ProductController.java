@@ -1,8 +1,9 @@
 package com.example.democrud.api.controller;
 
-import com.example.democrud.api.request.RequestProductDto;
+import com.example.democrud.api.request.productdto.RequestProductDto;
 import com.example.democrud.api.response.ResponseProductDto;
 import com.example.democrud.application.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -41,15 +42,16 @@ public class ProductController {
         return new ResponseEntity<>(product, OK);
     }
 
-    @PostMapping("/products")
-    public ResponseEntity<?> registerProduct(@RequestBody RequestProductDto requestProductDto) {
+    @PostMapping("/products/{userId}")
+    public ResponseEntity<?> registerProduct(@Valid @RequestBody RequestProductDto requestProductDto,
+                                             @PathVariable Long userId) {
         log.info("POST / registerProduct : {}", requestProductDto);
-        productService.registerProduct(requestProductDto);
+        productService.registerProduct(userId, requestProductDto);
         return new ResponseEntity<>(CREATED);
     }
 
     @PutMapping("/products/{id}")
-    public ResponseEntity<?> modifyProduct(@PathVariable Long id, @RequestBody RequestProductDto requestProductDto) {
+    public ResponseEntity<?> modifyProduct(@Valid @PathVariable Long id, @RequestBody RequestProductDto requestProductDto) {
         log.info("PUT / modifyProduct : id -> {}");
         log.info("PUT / modifyProduct : requestProductDto -> ", requestProductDto);
         productService.modifyProduct(id, requestProductDto);
@@ -61,5 +63,11 @@ public class ProductController {
         log.info("PUT / removeProduct : id -> {}");
         productService.removeProduct(id);
         return new ResponseEntity<>(OK);
+    }
+
+
+    @GetMapping("/error-test")
+    public void throwError() {
+        throw new RuntimeException("This is a forced error!");
     }
 }

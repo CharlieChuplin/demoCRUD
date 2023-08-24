@@ -1,6 +1,7 @@
 package com.example.democrud.domain.product;
 
-import com.example.democrud.api.request.RequestProductDto;
+import com.example.democrud.api.request.productdto.RequestProductDto;
+import com.example.democrud.domain.users.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,14 +24,21 @@ public class Product {
 
     private Integer price;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Users users;
+
     public Product(RequestProductDto requestProductDto) {
-        this.name = requestProductDto.name();
-        this.amount = requestProductDto.amount();
-        this.price = requestProductDto.price();
+        this.name = requestProductDto.getName();
+        this.amount = requestProductDto.getAmount();
+        this.price = requestProductDto.getPrice();
     }
     public void modify(RequestProductDto requestProductDto) {
-        this.name = requestProductDto.name();
-        this.amount = requestProductDto.amount();
-        this.price = requestProductDto.price();
+        this.name = requestProductDto.getName();
+        this.amount = requestProductDto.getAmount();
+        this.price = requestProductDto.getPrice();
+    }
+
+    public void registerByUsers(Users users) {
+        this.users = users;
     }
 }

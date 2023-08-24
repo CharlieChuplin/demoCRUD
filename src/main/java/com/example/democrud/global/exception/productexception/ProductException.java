@@ -1,15 +1,13 @@
-package com.example.democrud.global.exception;
+package com.example.democrud.global.exception.productexception;
 
 import lombok.Getter;
 
-import java.util.function.Supplier;
-
 @Getter
-public class NotFoundProductException extends RuntimeException{
+public class ProductException extends RuntimeException {
     private ProductErrorCode productErrorCode;
     private String message;
 
-    public NotFoundProductException(ProductErrorCode errorCode) {
+    public ProductException(ProductErrorCode errorCode) {
         super(errorCode.getMessage());
         this.productErrorCode = errorCode;
         this.message = errorCode.getMessage();
